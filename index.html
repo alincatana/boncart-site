@@ -691,7 +691,7 @@ a  { color: inherit; text-decoration: none; }
 }
 .pt-btn.active .pt-save { background: rgba(230,146,10,.22); color: #FCD34D; }
 
-.price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 760px; }
+.price-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 1100px; }
 
 .price-card {
   background: var(--card); border: 1.5px solid var(--border);
@@ -708,6 +708,25 @@ a  { color: inherit; text-decoration: none; }
   font: 700 11px 'Inter', sans-serif; letter-spacing: .04em;
   padding: 5px 13px; border-radius: 999px;
 }
+.price-card-badge.soon {
+  background: var(--gold-bg); color: #9A5C08;
+  border: 1px solid var(--gold-bdr);
+}
+.price-card.pro {
+  border-color: var(--gold-bdr);
+  background: linear-gradient(180deg, #fff 60%, var(--gold-bg) 280%);
+}
+.price-card.pro .price-card-name { color: #9A5C08; }
+.price-card.pro .price-card-amt  { color: #9A5C08; }
+.price-card.pro .price-cta-pro {
+  background: var(--gold); color: var(--deep);
+  font: 700 17px 'Inter', sans-serif;
+  padding: 15px 28px; border-radius: 13px; border: 0;
+  cursor: pointer; width: 100%; justify-content: center;
+  display: flex; align-items: center; gap: 9px;
+  transition: background .15s; min-height: 54px; line-height: 1;
+}
+.price-card.pro .price-cta-pro:hover { background: #F5A010; }
 .price-card-name { font: 700 14px 'Inter', sans-serif; color: var(--muted); margin-bottom: 12px; }
 .price-card.featured .price-card-name { color: var(--deep); }
 .price-card-amt {
@@ -742,7 +761,7 @@ a  { color: inherit; text-decoration: none; }
   .steps      { grid-template-columns: 1fr; }
   .ex-grid    { grid-template-columns: 1fr; }
   .scan-grid  { grid-template-columns: 1fr; }
-  .price-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+  .price-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
   .diff-grid  { grid-template-columns: 1fr; }
   .wl-row     { flex-direction: column; }
   .btn-gold   { width: 100%; }
@@ -1110,17 +1129,18 @@ a  { color: inherit; text-decoration: none; }
 <!-- ═══ PRICING ═══ -->
 <section class="section" id="preturi" aria-labelledby="price-h">
   <div class="w">
-    <div class="sec-eyebrow">Prețuri simple</div>
-    <h2 class="sec-h" id="price-h">Gratuit cât ai nevoie<br>să te obișnuiești</h2>
-    <p class="sec-p">Fără card la înscriere. Treci la Premium doar dacă vrei mai mult.</p>
+    <div class="sec-eyebrow">Prețuri clare</div>
+    <h2 class="sec-h" id="price-h">Începi gratuit.<br>Plătești când simți valoarea.</h2>
+    <p class="sec-p">Fără card la înscriere. Planurile plătite pornesc abia după beta.</p>
 
     <div class="price-toggle" role="group" aria-label="Alege ciclul de facturare">
       <button class="pt-btn active" id="ptMonthly" onclick="setBilling('monthly')">Lunar</button>
-      <button class="pt-btn" id="ptYearly" onclick="setBilling('yearly')">Anual <span class="pt-save">−34%</span></button>
+      <button class="pt-btn" id="ptYearly" onclick="setBilling('yearly')">Anual <span class="pt-save">−17%</span></button>
     </div>
 
     <div class="price-grid">
 
+      <!-- GRATUIT -->
       <div class="price-card rv">
         <div class="price-card-name">Gratuit</div>
         <div class="price-card-amt">0 <span>lei</span></div>
@@ -1128,31 +1148,52 @@ a  { color: inherit; text-decoration: none; }
         <ul class="price-feat" role="list">
           <li>✓ Asistent AI conversațional</li>
           <li>✓ Comparație pe 5 magazine</li>
+          <li>✓ 8 mesaje per sesiune</li>
           <li>✓ 5 scanări de bon / lună</li>
           <li>✓ Listă de cumpărături</li>
         </ul>
-        <button class="btn-ghost price-cta" onclick="focusDemo()">Începe gratuit</button>
+        <button class="btn-ghost price-cta" onclick="focusDemo()">Încearcă acum</button>
       </div>
 
+      <!-- PLUS -->
       <div class="price-card featured rv">
-        <div class="price-card-badge">Recomandat</div>
-        <div class="price-card-name">Premium</div>
-        <div class="price-card-amt" id="priceAmt">9,99 <span>lei/lună</span></div>
-        <div class="price-card-sub" id="priceSub">Anulezi oricând</div>
+        <div class="price-card-badge">Cel mai popular</div>
+        <div class="price-card-name">BonCart Plus</div>
+        <div class="price-card-amt" id="plusAmt">9,99 <span>lei/lună</span></div>
+        <div class="price-card-sub" id="plusSub">Anulezi oricând</div>
         <ul class="price-feat" role="list">
           <li>✓ Tot ce e în Gratuit, plus:</li>
-          <li>✓ Scanări de bon nelimitate</li>
-          <li>✓ Alerte de preț pe produsele tale</li>
-          <li>✓ Partajare în familie</li>
-          <li>✓ Rută optimizată pe mai multe magazine</li>
-          <li>✓ Raport lunar de cheltuieli</li>
+          <li>✓ 100 mesaje AI / lună</li>
+          <li>✓ 30 scanări de bon / lună</li>
+          <li>✓ Coșuri salvate + istoric 3 luni</li>
+          <li>✓ Alerte de preț pe produse urmărite</li>
+          <li>✓ Un profil de preferințe alimentare</li>
         </ul>
         <button class="btn-dark price-cta" onclick="document.getElementById('lista').scrollIntoView({behavior:'smooth'})">Rezervă-ți locul</button>
       </div>
 
+      <!-- PRO -->
+      <div class="price-card pro rv">
+        <div class="price-card-badge soon">În curând</div>
+        <div class="price-card-name">BonCart Pro</div>
+        <div class="price-card-amt" id="proAmt">19,99 <span>lei/lună</span></div>
+        <div class="price-card-sub" id="proSub">Anulezi oricând</div>
+        <ul class="price-feat" role="list">
+          <li>✓ Tot ce e în Plus, plus:</li>
+          <li>✓ Conversații AI nelimitate</li>
+          <li>✓ 100 scanări de bon / lună</li>
+          <li>✓ Profil de familie — până la 4 persoane</li>
+          <li>✓ Liste recurente + rută optimizată</li>
+          <li>✓ Restricții alimentare și alergii</li>
+          <li>✓ Raport lunar complet de cheltuieli</li>
+          <li>✓ Acces prioritar la funcții noi</li>
+        </ul>
+        <button class="price-cta-pro" onclick="document.getElementById('lista').scrollIntoView({behavior:'smooth'})">Notifică-mă la lansare</button>
+      </div>
+
     </div>
 
-    <p class="price-note">Plățile pornesc abia după beta. Cei înscriși acum pe listă primesc o lună de Premium gratuit la lansare.</p>
+    <p class="price-note">Înscriși acum pe lista de așteptare primesc o lună de BonCart Plus gratuit la lansare. Planul Pro se lansează după validarea cu primii abonați.</p>
   </div>
 </section>
 
@@ -1651,14 +1692,22 @@ function resetScan() {
 function setBilling(mode) {
   document.getElementById('ptMonthly').classList.toggle('active', mode === 'monthly');
   document.getElementById('ptYearly').classList.toggle('active', mode === 'yearly');
-  const amt = document.getElementById('priceAmt');
-  const sub = document.getElementById('priceSub');
+
+  const plusAmt = document.getElementById('plusAmt');
+  const plusSub = document.getElementById('plusSub');
+  const proAmt  = document.getElementById('proAmt');
+  const proSub  = document.getElementById('proSub');
+
   if (mode === 'yearly') {
-    amt.innerHTML  = '79 <span>lei/an</span>';
-    sub.textContent = 'Echivalent 6,58 lei/lună · anulezi oricând';
+    plusAmt.innerHTML   = '99 <span>lei/an</span>';
+    plusSub.textContent = 'Echivalent 8,25 lei/lună · anulezi oricând';
+    proAmt.innerHTML    = '199 <span>lei/an</span>';
+    proSub.textContent  = 'Echivalent 16,58 lei/lună · anulezi oricând';
   } else {
-    amt.innerHTML  = '9,99 <span>lei/lună</span>';
-    sub.textContent = 'Anulezi oricând';
+    plusAmt.innerHTML   = '9,99 <span>lei/lună</span>';
+    plusSub.textContent = 'Anulezi oricând';
+    proAmt.innerHTML    = '19,99 <span>lei/lună</span>';
+    proSub.textContent  = 'Anulezi oricând';
   }
 }
 
