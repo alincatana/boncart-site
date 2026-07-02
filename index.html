@@ -1207,7 +1207,8 @@ REGULI STRICTE:
 — Rețetă → identifici ingredientele esențiale și găsești magazinul potrivit.
 — Buget → optimizezi și confirmi dacă se poate.
 — Sănătate → ești atent și util, nu dai sfaturi medicale.
-— Din magazin → răspunzi instant cu alternative practice.`;
+— Din magazin → răspunzi instant cu alternative practice.
+— Ai maxim 2 căutări web per răspuns — la o listă cu mai multe produse, caută o singură dată, pentru cel mai relevant/scump produs, nu separat pentru fiecare.`;
 
 let busy = false;
 
@@ -1230,9 +1231,9 @@ async function callAI(text) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 350,
+        max_tokens: 260,
         system: SYSTEM,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 2 }],
         messages: [{ role: 'user', content: text }]
       })
     });
@@ -1244,6 +1245,13 @@ async function callAI(text) {
 }
 
 /* ── Trimite mesaj ── */
+/* ── Cotă gratuită chat (demo) ─────────────────────────────────
+   Tot un contor în memorie, ca la scanare — resetabil la refresh.
+   Limita reală, server-side per IP, e RATE_LIMIT_MAX din backend
+   (vezi main.py) — asta de aici e doar partea vizibilă din UX. ── */
+const FREE_CHAT_LIMIT = 8;
+let chatCount = 0;
+
 async function demoSend(text) {
   if (typeof text === 'string') text = text.trim();
   if (!text || busy) return;
@@ -1256,6 +1264,20 @@ async function demoSend(text) {
   inp.value = '';
 
   hideCursor();
+
+  if (chatCount >= FREE_CHAT_LIMIT) {
+    msgs.insertAdjacentHTML('beforeend', `
+      <div class="msg-ai">
+        <div class="msg-ai-label">BonCart</div>
+        <div class="msg-ai-bbl">
+          Ai ajuns la limita gratuită de ${FREE_CHAT_LIMIT} mesaje pentru această sesiune. Cu Premium ai conversație nelimitată — 9,99 lei/lună.
+          <br><button class="scan-reset-btn" style="margin-top:10px" onclick="document.getElementById('preturi').scrollIntoView({behavior:'smooth'})">Vezi Premium</button>
+        </div>
+      </div>
+    `);
+    scrollMsgs();
+    return;
+  }
 
   msgs.insertAdjacentHTML('beforeend', `<div class="msg-you">${esc(text)}</div>`);
   scrollMsgs();
@@ -1280,6 +1302,7 @@ async function demoSend(text) {
     const reply = await callAI(text);
     const el = document.getElementById(tid);
     if (el) el.querySelector('.msg-ai-bbl').innerHTML = render(reply);
+    chatCount++;
   } catch (e) {
     const el = document.getElementById(tid);
     if (el) el.querySelector('.msg-ai-bbl').innerHTML =
@@ -1454,7 +1477,7 @@ async function callReceiptAI(base64) {
       model: 'claude-sonnet-4-6',
       max_tokens: 800,
       system: RECEIPT_SYSTEM,
-      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
       messages: [{
         role: 'user',
         content: [
